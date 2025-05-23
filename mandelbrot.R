@@ -82,15 +82,8 @@ parse_args <- function(args) {
 }
 
 params <- parse_args(commandArgs(trailingOnly = TRUE))
-
 width <- as.numeric(params[["width"]])  %||% 80
 height <- as.numeric(params[["height"]]) %||% 75
 png <- as.numeric(params[["png"]]) %||% 0
 
-# params <- parse_args(args)
-
-# # Assign defaults where needed
-# width <- as.numeric(params[["width"]])  %||% 80
-# height <- as.numeric(params[["height"]]) %||% 75
-# png <- as.numeric(params[["png"]]) %||% 0
 mandelbrot(width=width,height=height,png=png)
