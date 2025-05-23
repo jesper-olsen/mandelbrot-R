@@ -2,7 +2,7 @@
 mandelbrot-R
 ==============
 
-Mandelbrot with R. Other languages: 
+Mandelbrot with [R](https://www.r-project.org/). Other languages: 
 
 * [Rust](https://github.com/jesper-olsen/mandelbrot-rs) 
 * [Erlang](https://github.com/jesper-olsen/mandelbrot_erl) 
