@@ -4,7 +4,7 @@ mandelbrot <- function(width = 100, height = 75, png = 0) {
   ur_x <- -1.0
   ur_y <- 0.35
   max_iter <- 255
-  
+
   if (png == 0) {
     ascii_output(ll_x, ll_y, ur_x, ur_y, max_iter, width, height)
   } else {
@@ -15,10 +15,10 @@ mandelbrot <- function(width = 100, height = 75, png = 0) {
 ascii_output <- function(ll_x, ll_y, ur_x, ur_y, max_iter, width, height) {
   fwidth <- ur_x - ll_x
   fheight <- ur_y - ll_y
-  
-  for (y in 0:(height-1)) {
+
+  for (y in 0:(height - 1)) {
     line <- ""
-    for (x in 0:(width-1)) {
+    for (x in 0:(width - 1)) {
       real <- ll_x + x * fwidth / width
       imag <- ur_y - y * fheight / height
       iter <- escape_time(real, imag, max_iter)
@@ -34,7 +34,7 @@ gptext_output <- function(ll_x, ll_y, ur_x, ur_y, max_iter, width, height) {
 
   for (y in height:1) {
     row <- c()
-    for (x in 0:(width-1)) {
+    for (x in 0:(width - 1)) {
       real <- ll_x + x * fwidth / width
       imag <- ur_y - y * fheight / height
       iter <- escape_time(real, imag, max_iter)
@@ -82,8 +82,8 @@ parse_args <- function(args) {
 }
 
 params <- parse_args(commandArgs(trailingOnly = TRUE))
-width <- as.numeric(params[["width"]])  %||% 80
+width <- as.numeric(params[["width"]]) %||% 100
 height <- as.numeric(params[["height"]]) %||% 75
 png <- as.numeric(params[["png"]]) %||% 0
 
-mandelbrot(width=width,height=height,png=png)
+mandelbrot(width = width, height = height, png = png)
