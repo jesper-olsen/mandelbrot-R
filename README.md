@@ -11,6 +11,7 @@ Mandelbrot with [R](https://www.r-project.org/). Other languages:
 * [Fortran](https://github.com/jesper-olsen/mandelbrot-f) 
 * [Nushell](https://github.com/jesper-olsen/mandelbrot-nu)
 * [Tcl](https://github.com/jesper-olsen/mandelbrot-tcl)
+* [Lua](https://github.com/jesper-olsen/mandelbrot-lua)
 
 
 
