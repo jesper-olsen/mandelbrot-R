@@ -10,21 +10,22 @@ This project compares the performance and features of Mandelbrot set generation 
 Single Thread/Multi-thread shows the number of seconds it takes to do a 5000x5000 calculation.
 
 
-| Language    | Repository                                                         | Single Thread   | Multi-Thread |
-| :--------   | :----------------------------------------------------------------- | ---------------:| -----------: |
-| Awk         | [mandelbrot-awk](https://github.com/jesper-olsen/mandelbrot-awk)   |           805.9 |              |
-| C           | [mandelbrot-c](https://github.com/jesper-olsen/mandelbrot-c)       |             6.9 |          1.4 |
-| Erlang      | [mandelbrot_erl](https://github.com/jesper-olsen/mandelbrot_erl)   |            56.0 |           16 |
-| Fortran     | [mandelbrot-f](https://github.com/jesper-olsen/mandelbrot-f)       |            11.6 |              |
-| Lua         | [mandelbrot-lua](https://github.com/jesper-olsen/mandelbrot-lua)   |           158.2 |              |
-| Mojo        | [mandelbrot-mojo](https://github.com/jesper-olsen/mandelbrot-mojo) |            39.6 |         39.2 |
-| Nushell     | [mandelbrot-nu](https://github.com/jesper-olsen/mandelbrot-nu)     |   (est) 11488.5 |              |
-| Python      | [mandelbrot-py](https://github.com/jesper-olsen/mandelbrot-py)     |    (pure) 177.2 | (jax)    7.5 |
-| **R**       | [mandelbrot-R](https://github.com/jesper-olsen/mandelbrot-R)       |           562.0 |              |
-| Rust        | [mandelbrot-rs](https://github.com/jesper-olsen/mandelbrot-rs)     |             8.4 |          2.2 |
-| Tcl         | [mandelbrot-tcl](https://github.com/jesper-olsen/mandelbrot-tcl)   |           706.1 |              |
-| Zig         | [mandelbrot-zig](https://github.com/jesper-olsen/mandelbrot-zig)   |             8.6 |          1.9 |
-
+| Language    | Repository                                                           | Single Thread   | Multi-Thread | Simd | Multi-Thread + Simd |
+| :--------   | :------------------------------------------------------------------- | ---------------:| -----------: | ----:| ------------------: |
+| **Awk**     | [mandelbrot-awk](https://github.com/jesper-olsen/mandelbrot-awk)     |           417.9 |              |      |                     |
+| C           | [mandelbrot-c](https://github.com/jesper-olsen/mandelbrot-c)         |             3.6 |          0.6 |  0.7 |               0.2   |
+| Erlang      | [mandelbrot_erl](https://github.com/jesper-olsen/mandelbrot_erl)     |            35.6 |          8.3 |      |                     |
+| Fortran     | [mandelbrot-f](https://github.com/jesper-olsen/mandelbrot-f)         |             4.5 |              |      |                     |
+| Lua         | [mandelbrot-lua](https://github.com/jesper-olsen/mandelbrot-lua)     |            33.2 |              |      |                     |
+| Mojo        | [mandelbrot-mojo](https://github.com/jesper-olsen/mandelbrot-mojo)   |             3.8 |          1.2 |  0.7 |               0.4   |
+| Nushell     | [mandelbrot-nu](https://github.com/jesper-olsen/mandelbrot-nu)       |                 |              |      |                     |
+| Odin        | [mandelbrot-odin](https://github.com/jesper-olsen/mandelbrot-odin)   |             4.4 |              |      |                     |
+| Python      | [mandelbrot-py](https://github.com/jesper-olsen/mandelbrot-py)       |     (pure) 93.3 | (jax)    5.9 |      |                     |
+| R           | [mandelbrot-R](https://github.com/jesper-olsen/mandelbrot-R)         |           335.0 |              |      |                     |
+| Rust        | [mandelbrot-rs](https://github.com/jesper-olsen/mandelbrot-rs)       |             4.7 |          1.3 |      |                     |
+| Swift       | [mandelbrot-swift](https://github.com/jesper-olsen/mandelbrot-swift) |             4.5 |          1.2 |  1.3 |               0.7   |
+| Tcl         | [mandelbrot-tcl](https://github.com/jesper-olsen/mandelbrot-tcl)     |           306.9 |              |      |                     |
+| Zig         | [mandelbrot-zig](https://github.com/jesper-olsen/mandelbrot-zig)     |             4.9 |          0.9 |  0.7 |               0.3   |
 
 
 ## Prerequisites
@@ -33,6 +34,7 @@ You will need the following installed:
 
 1.  Rscript
 2.  **Gnuplot** (required *only* for generating PNG images).
+
 
 
 ## Usage
@@ -45,7 +47,7 @@ To render the Mandelbrot set directly in your terminal, run the script
 
 
 ```sh
-% Rscript mandelbrot.R width=100 height=75 png=0
+Rscript mandelbrot.R width=100 height=75 png=0
 
                                                                                 .
 
@@ -131,7 +133,7 @@ To create a high-resolution PNG, you first generate a data file and then process
 Set `png=1` and specify the desired dimensions. Redirect the output to a file.
 
 ```sh
-% time Rscript mandelbrot.R width=1000 height=750 png=1 >image.dat
+Rscript mandelbrot.R width=1000 height=750 png=1 >image.dat
 ```
 
 **Step 3: Run gnuplot**
@@ -146,27 +148,26 @@ The result is a high-quality `mandelbrot.png` image.
 
 
 ```
-% Rscript mandelbrot.R width=1000 height=750 png=1 >image.txt
+Rscript mandelbrot.R width=1000 height=750 png=1 >image.txt
 
-% gnuplot topng.gp
-% ^open mandelbrot.png
+gnuplot topng.gp
+^open mandelbrot.png
 ```
 ![PNG](https://raw.githubusercontent.com/jesper-olsen/mandelbrot-R/main/mandelbrot.png)
 
 
 `## Performance
 
-Benchmarks were run on an **Apple M1** system with Rscript (R) version 4.5.0 (2025-04-11)
+Benchmarks were run on a **Macbook Air M5** with `Rscript (R) version 4.6.1 (2026-06-24)`
 
 **Generating a 1000x750 data file:**
 ```sh
-% time Rscript mandelbrot.R width=1000 height=750 png=1 >image.txt
-13.01s user 0.14s system 99% cpu 13.217 total
+time Rscript mandelbrot.R width=1000 height=750 png=1 >image.txt
+8.12s user 0.06s system 98% cpu 8.275 total
 ```
 
 **Generating a 5000x5000 data file:**
 ```sh
-time Rscript mandelbrot.R width=5000 height=5000 png=1 >image5k.txt
-545.76s user 39.57s system 93% cpu 10:28.74 total
+time Rscript mandelbrot.R width=5000 height=5000 png=1 >image.txt
+332.40s user 1.49s system 99% cpu 5:35.04 total
 ```
-``
